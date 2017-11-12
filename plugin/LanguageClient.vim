@@ -2,10 +2,16 @@ if has('nvim')
     finish
 endif
 
+try
+    let s:lc = yarp#py3('LanguageClient_wrapper')
+catch /^Vim\%((\a\+)\)\=:E117/
+    call SpaceVim#logger#warn('LanguageClient need yarp')
+    finish
+endtry
+
 command LanguageClientStart call LanguageClient_start()
 command LanguageClientStop call LanguageClient_stop()
 
-let s:lc = yarp#py3('LanguageClient_wrapper')
 
 function! LanguageClient_getState()
     return s:lc.call('getState')
